@@ -1,47 +1,49 @@
 <template lang="pug">
 .container
-    a-icon.trigger(:type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="$emit('clickCollapsed')")
+    a-icon.trigger(
+        :type="collapsed ? 'menu-unfold' : 'menu-fold'",
+        @click="$emit('clickCollapsed')"
+    )
     .layout-right
-        a-dropdown.layout-right-box(:trigger="['hover']" placement="bottomCenter")
-            a-icon(type='user')
+        a-dropdown.layout-right-box(
+            :trigger="['hover']",
+            placement="bottomCenter"
+        )
+            a-icon(type="user")
             a-menu.menu-class(slot="overlay")
                 a-menu-item.menu-item-class(@click="ev_logout") 退出
-        a-dropdown.layout-right-box(:trigger="['hover']")
-            a-icon(type='cluster')
-            a-menu.menu-class(slot="overlay" style="padding: 1rem 2.4rem;")
-                a-menu-item-group(title='社团普通用户')
-                    a-menu-item.menu-item-class(v-for="item in clubData" :key='item.key' @click="goToMyClub(item)") {{item.title}}
-
 </template>
 
 <script>
 export default {
-     props: ["collapsed"],
-     data() {
-         return {
-             clubData: [],
-         }
-     },
-     mounted() {
-     },
-     methods:{
+    props: ["collapsed"],
+    data() {
+        return {
+            clubData: [],
+        };
+    },
+    mounted() {},
+    methods: {
         ev_logout() {
             // logout()
             // .then(res => {
-                // this.$store.commit('logout') => 在路由钩子里自动调用了
-                this.$notification['success']({ message: '退出成功!', duration: 1 })
-                this.$nextTick(() => {
-                    this.$router.push({
-                        name: 'login'
-                    })
-                })
-			// })
+            // this.$store.commit('logout') => 在路由钩子里自动调用了
+            this.$notification["success"]({
+                message: "退出成功!",
+                duration: 1,
+            });
+            this.$nextTick(() => {
+                this.$router.push({
+                    name: "login",
+                });
+            });
+            // })
         },
-     }
-}
+    },
+};
 </script>
 <style scoped lang="scss">
-.container{
+.container {
     font-size: $fontSize;
     color: #222;
     width: 100%;
@@ -55,6 +57,9 @@ export default {
         display: flex;
         align-items: center;
         flex-direction: row-reverse;
+        i {
+            cursor: pointer;
+        }
     }
     .layout-right-box {
         color: #222831;
@@ -71,19 +76,19 @@ export default {
 .menu-class {
     max-height: 20rem;
     overflow-y: auto;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .menu-item-class {
     // color: #d4cd96 !important;
     opacity: 0.8;
 
-    &:hover{
+    &:hover {
         opacity: 1;
     }
 }
 
-/deep/ .ant-dropdown-menu-item-group-title{
+/deep/ .ant-dropdown-menu-item-group-title {
     font-weight: bold;
     user-select: none;
 }

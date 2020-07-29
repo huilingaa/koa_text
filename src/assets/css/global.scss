@@ -75,6 +75,7 @@
 // layout-content 里的 css
 .page-block {
     display: flex;
+    align-items: center;
     margin: 0 20px 20px 20px;
     border-bottom: 1px solid #e8e8e8;
 
@@ -95,6 +96,20 @@
 .page-content {
     flex: 1;
     padding: 0 30px;
+}
+
+.click-opacity-css {
+    cursor: pointer;
+    &:hover {
+        opacity: 0.6;
+    }
+    &:active {
+        opacity: 1;
+    }
+}
+
+p:last-child {
+    margin-bottom: 0;
 }
 
 /* ant 全局样式修改 */
