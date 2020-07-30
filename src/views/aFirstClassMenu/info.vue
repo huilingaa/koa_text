@@ -10,7 +10,7 @@
             :showUploadList="false",
             :beforeUpload="beforeUpload"
         )
-            a-button 上传文件{{ fileDataList }}
+            a-button 上传账号
     .search-box
         .search-box-row
             .search-box-title 角色等级范围：
@@ -59,33 +59,59 @@
             )
         .search-box-row
             a-button(size="small", type="primary", @click="pageChange(1)") 查询
-
+            a-button-group.opt-buttons
+                a-button(
+                    size="small",
+                    type="primary",
+                    :disabled="selectedRowKeys.length == 0",
+                    @click="re_deleteUser(selectedRowKeys)"
+                ) 批量删除
+                a-button(
+                    size="small",
+                    type="primary",
+                    :disabled="selectedRowKeys.length == 0",
+                    @click="modalVisible = true"
+                ) 批量编辑服务器
+                a-button(
+                    size="small",
+                    type="primary",
+                    :disabled="selectedRowKeys.length == 0",
+                    @click="re_userformDownload(selectedRowKeys)"
+                ) 批量导出数据
+                a-button(
+                    v-if="downloadLink",
+                    size="small",
+                    type="primary",
+                    icon="cloud-download",
+                    @click="downFile(downloadLink)"
+                ) 下载
     .page-content
         a-table(
+            size="small",
             :columns="table.columns",
             :loading="table.loading",
             :dataSource="table.tbody",
             :pagination="false",
-            :rowKey="(record) => record.name"
+            :rowKey="(record) => record._id",
+            :row-selection="{ selectedRowKeys: selectedRowKeys, onChange: onSelectChange }"
         )
             template(slot="userid", slot-scope="text,e,index")
                 span {{ e.userid }}
-                a-popover(title="账号设置" trigger="click")
-                    template(slot="content")
-                        p(v-for="(item, index) in tableConfigList" :key="index")
-                            a-badge(:status="item.state == 0 ? 'default' : 'processing'" :text="item.title")
-                    a-icon.click-opacity-css(@click="re_configUser(e._id)" type="eye" style="margin-left: 6px;")
+                //- a-popover(title="账号设置" trigger="click")
+                //-     template(slot="content")
+                //-         p(v-for="(item, index) in tableConfigList" :key="index")
+                //-             a-badge(:status="item.state == 0 ? 'default' : 'processing'" :text="item.title")
+                //-     a-icon.click-opacity-css(@click="re_configUser(e._id)" type="eye" style="margin-left: 6px;")
             template(slot="_id", slot-scope="text,e,index")
                 a-radio-group(size="small")
                     //- a-button(
                     //-     size="small",
                     //-     type="link",
-                    //-     @click="re_deleteUser(e._id)"
                     //- ) 编辑
                     a-button(
                         size="small",
                         type="link",
-                        @click="re_deleteUser(e._id)"
+                        @click="re_deleteUser([e._id])"
                     ) 删除
     .showDataForPagesComponent(v-if="table.tbody.length")
         a-pagination(
@@ -97,9 +123,24 @@
             @change="pageChange(...arguments, 'page')",
             @showSizeChange="onShowSizeChange(...arguments, 'size')"
         )
+
+    a-modal(
+        title="批量修改账号服务器",
+        :visible="modalVisible",
+        @ok="editManyData",
+        @cancel="modalVisible = false"
+    )
+        a-input(placeholder="请输入新的服务器名", v-model="areaInput")
 </template>
 <script>
-import { findUser, deleteUser, uploadUser, configUser } from "@/api/login";
+import {
+    findUser,
+    deleteUser,
+    uploadUser,
+    configUser,
+    userformModifyUser,
+    userformDownload,
+} from "@/api/all";
 
 export default {
     data() {
@@ -113,7 +154,10 @@ export default {
                 page: 1,
                 type: 1,
             },
+            selectedRowKeys: [],
             tableConfigList: [],
+            modalVisible: false,
+            areaInput: "",
             fileList: [],
             allFileContent: "",
             formData: {
@@ -124,10 +168,32 @@ export default {
                 uuid: "",
                 userid: "",
             },
+            downloadLink: "",
         };
+    },
+    mounted() {
+        this.pageChange(1);
     },
     computed: {},
     methods: {
+        downFile(url) {
+            window.open(url, '_self')
+        },
+        editManyData() {
+            if (!this.areaInput) {
+                this.$message.error("请输入服务器名!");
+                return;
+            }
+            let ids = this.selectedRowKeys;
+            userformModifyUser({
+                ids,
+                area: this.areaInput,
+            }).then((res) => {
+                this.$message.success("修改成功!");
+                this.modalVisible = false;
+                this.pageChange(1);
+            });
+        },
         beforeUpload(file) {
             this.fileList = [file];
             this.readFile(file);
@@ -139,7 +205,7 @@ export default {
                 this.allFileContent = e.currentTarget.result;
                 let list = this.fn_getFileDataList(this.allFileContent);
                 uploadUser({ data: list }).then((res) => {
-                    console.log(res);
+                    this.$message.success("上传成功!");
                 });
             };
             rd.readAsBinaryString(f);
@@ -159,8 +225,15 @@ export default {
             });
             return newArr;
         },
+        re_userformDownload(ids) {
+            userformDownload({
+                ids,
+            }).then((res) => {
+                this.downloadLink = res.data.url;
+                this.$message.success("导出成功!");
+            });
+        },
         re_findUser(page, pageSize) {
-            // grade_min, grade_max, before_time, area, page, page_size, uuid
             findUser({ page, page_size: pageSize, ...this.formData }).then(
                 (res) => {
                     if (res.code == 200) {
@@ -173,13 +246,14 @@ export default {
                         this.table.pageSize = pageSize;
                         this.table.page = page;
                         this.table.total = total;
+                        this.table = { ...this.table };
                     }
                 }
             );
         },
-        re_deleteUser(id) {
+        re_deleteUser(ids) {
             deleteUser({
-                _id: id,
+                ids: ids,
             }).then((res) => {
                 if (res.code == 200) {
                     this.$message.success("删除成功!");
@@ -188,12 +262,12 @@ export default {
             });
         },
         re_configUser(id) {
-            this.tableConfigList = []
+            this.tableConfigList = [];
             configUser({
-                _id: id
-            }).then(res=>{
-                this.tableConfigList = res.data.data
-            })
+                _id: id,
+            }).then((res) => {
+                this.tableConfigList = res.data.data;
+            });
         },
         onShowSizeChange(page, pageSize) {
             this.re_findUser(page, pageSize);
@@ -201,9 +275,9 @@ export default {
         pageChange(page) {
             this.re_findUser(page, this.table.pageSize);
         },
-    },
-    mounted() {
-        this.pageChange(1);
+        onSelectChange(selectedRowKeys) {
+            this.selectedRowKeys = selectedRowKeys;
+        },
     },
 };
 </script>
@@ -228,10 +302,10 @@ export default {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    margin: 0 2rem;
+    margin: 0 3rem 0 2rem;
+    box-sizing: border-box;
     .search-box-row {
-        min-width: 30%;
-        max-width: 33%;
+        flex: 1;
         display: flex;
         align-items: center;
         margin: 0 0 2rem 2rem;
@@ -240,5 +314,11 @@ export default {
         font-weight: bold;
         white-space: nowrap;
     }
+}
+
+.opt-buttons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
 }
 </style>

@@ -15,14 +15,20 @@ let constantRouterMap = [
     {
         path: '/',
         alias: '/home',
-        redirect: '/clubData',
+        redirect: '/info',
         component: LAYOUT,
         children: [
             {
-                path: '/clubData',
+                path: '/info',
                 name: '5e36f2569a498806041d1117',
-                meta: { title: '信息管理', icon: 'flag' },
-                component: () => import('@/views/aFirstClassMenu/clubData.vue')
+                meta: { title: '信息管理', icon: 'unordered-list' },
+                component: () => import('@/views/aFirstClassMenu/info.vue')
+            },
+            {
+                path: '/opts',
+                name: '5e3819ce61093720bacff133',
+                meta: { title: '脚本配置', icon: 'control' },
+                component: () => import('@/views/aFirstClassMenu/opts.vue')
             }
         ]
     },

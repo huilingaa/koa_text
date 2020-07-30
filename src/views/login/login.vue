@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { login } from '@/api/login'
+import { login } from '@/api/all'
 
 export default {
     name: 'login',

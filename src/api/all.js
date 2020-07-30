@@ -47,3 +47,35 @@ export function uploadUser(req) {
         data: req
     })
 }
+
+export function configModifyUser(req) {
+    return service({
+        url: '/user/config_modify_user',
+        method: 'post',
+        data: req
+    })
+}
+
+export function userformModifyUser(req) {
+    return service({
+        url: '/user/userform_modify_user',
+        method: 'post',
+        data: req
+    })
+}
+
+export function userformDownload(req) {
+    return service({
+        url: '/user/userform_download',
+        method: 'post',
+        data: req
+    })
+}
+
+export function userAdminReturn(req) {
+    return service({
+        url: '/user/admin_return',
+        method: 'post',
+        data: req
+    })
+}
