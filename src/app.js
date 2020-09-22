@@ -1,15 +1,13 @@
 const Koa = require('koa')
 const os = require('os')
 const Router = require('@koa-router')
+const koaBody = require('koa-body')
+// https://github.com/dlau/koa-body 支持文件上传
 const cors = require('@koa/cors')
 const CSRF = require('koa-csrf')
-const bodyParser = require('koa-bodyparser')
-
-const multer = require('@koa/multer')
-const upload = multer()
-global.upload = upload
 
 const app = new Koa()
+app.use(koaBody())
 app.use(cors())
 app.use(new CSRF({
   invalidTokenMessage: 'Invalid CSRF token',
@@ -17,7 +15,6 @@ app.use(new CSRF({
   excludedMethods: ['GET', 'HEAD', 'OPTIONS'],
   disableQuery: false
 }))
-app.use(bodyParser())
 
 /* 路由处理 */
 const router = new Router()
