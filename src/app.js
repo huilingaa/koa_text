@@ -2,28 +2,25 @@ const Koa = require('koa')
 const os = require('os')
 const Router = require('@koa/router')
 const cors = require('@koa/cors')
-const jwt = require('koa-jwt')
 const koaBody = require('koa-body')
 // https://github.com/dlau/koa-body 支持文件上传
+const { jsonwebtokenSign, tokenVerification } = require('./public/jwt')
+
+global.secretOrPrivateKey = 'xstxhjh'
 
 const app = new Koa()
 const router = new Router()
 app.use(cors())
 app.use(koaBody())
+
+app.use(tokenVerification())
+
 app
   .use(router.routes())
   .use(router.allowedMethods())
 
-// 不受保护的
-router.get('/', (ctx, next) => {
-  ctx.body = 'hello world'
-})
-
-app.use(jwt({ secret: 'shared-secret' }))
-
-// 受到保护的
 router.get('/token', (ctx, next) => {
-  ctx.body = ctx
+  ctx.body = jsonwebtokenSign({})
 })
 
 /* 启动 */
