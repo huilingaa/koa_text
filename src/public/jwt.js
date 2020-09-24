@@ -18,8 +18,11 @@ function tokenVerification () {
 
     jwt.verify(token, global.secretOrPrivateKey, (err, decode) => {
       if (err) {
-        ctx.body = err.message
+        ctx.throw('400', 'token 已失效')
       } else {
+        ctx.body = {
+          status: 300
+        }
         next()
       }
     })

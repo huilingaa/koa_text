@@ -2,7 +2,7 @@ const { jsonwebtokenSign } = require('../../public/jwt')
 
 /**
    * @swagger
-   * /user:
+   * /login:
    *   post:
    *     description: 获取token
    *     tags: [User]
@@ -11,7 +11,7 @@ const { jsonwebtokenSign } = require('../../public/jwt')
    *         description: 返回用户信息
    */
 module.exports = async router => {
-  router.post('/token', (ctx, next) => {
+  router.post('/login', (ctx, next) => {
     ctx.body = jsonwebtokenSign({
       name: 'hjh'
     })

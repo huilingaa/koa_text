@@ -19,4 +19,5 @@ const swaggerSpec = swaggerJSDoc(options)
 router.get('/swagger.json', async function (ctx) {
   ctx.body = swaggerSpec
 })
+
 module.exports = router

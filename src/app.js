@@ -10,11 +10,12 @@ global.secretOrPrivateKey = 'xstxhjh'
 
 const app = new Koa()
 app.use(cors())
-app.use(koaBody())
 // 数据处理，支持文件上传 https://github.com/dlau/koa-body
-app.use(compress({ threshold: 2048 }))
+app.use(koaBody())
 // gzip 压缩
+app.use(compress({ threshold: 2048 }))
 
+// 生成api文档
 app.use(koaSwagger({
   routePrefix: '/swagger',
   swaggerOptions: {
@@ -24,9 +25,23 @@ app.use(koaSwagger({
 const swagger = require('../util/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
 
+// 全局捕获错误
+require('../util/errorCatch.js')(app)
+
+// 校验token
 app.use(tokenVerification())
 
 require('./routers/index.js')(app)
+
+app.use((ctx) => {
+  // 返回数据格式处理
+  const status = ctx.body && ctx.body.status
+  Reflect.deleteProperty(ctx.body, 'status')
+  ctx.body = {
+    status: status || 200,
+    data: ctx.body
+  }
+})
 
 /* 启动 */
 const port = 3000
