@@ -1,19 +1,26 @@
 const jwt = require('jsonwebtoken')
 const { getReqIp } = require('./common')
 
+const noVerificationRouters = ['/token']
 // 校验请求者的token
 function tokenVerification () {
-  // jwt.verify(token, global.secretOrPrivateKey, (err, decode) => {
-  //   if (err) {
-  //     return 'err'
-  //   }
-  //   console.log(ip, decode)
-  // })
   return async (ctx, next) => {
     const ip = getReqIp(ctx.req)
     const token = ctx.get('token')
+
+    if (noVerificationRouters.includes(ctx.url)) {
+      next()
+      return
+    }
     console.log(ip, token)
-    await next()
+
+    jwt.verify(token, global.secretOrPrivateKey, (err, decode) => {
+      if (err) {
+        ctx.body = err.message
+      } else {
+        next()
+      }
+    })
   }
 }
 

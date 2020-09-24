@@ -20,7 +20,9 @@ app
   .use(router.allowedMethods())
 
 router.get('/token', (ctx, next) => {
-  ctx.body = jsonwebtokenSign({})
+  ctx.body = jsonwebtokenSign({
+    name: 'hjh'
+  })
 })
 
 /* 启动 */
