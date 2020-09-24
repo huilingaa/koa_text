@@ -3,10 +3,11 @@ const path = require('path')
 const Router = require('@koa/router')
 const router = new Router()
 
+const dirPath = (url = '') => {
+  return path.resolve(__dirname, `../routers/${url}`)
+}
+
 module.exports = async app => {
-  const dirPath = (url = '') => {
-    return path.resolve(__dirname, `../routers/${url}`)
-  }
   const dirData = fs.readdirSync(dirPath())
 
   dirData.map(item => {
