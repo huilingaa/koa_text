@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken')
 const { getReqIp } = require('./common')
 
-const noVerificationRouters = ['/token']
+const noVerificationRouters = ['/login']
 // 不校验token的路由
 
-// 校验请求者的token
+// 校验请求者的token 中间件
 function tokenVerification () {
   return async (ctx, next) => {
     const ip = getReqIp(ctx.req)
@@ -20,9 +20,6 @@ function tokenVerification () {
       if (err) {
         ctx.throw('400', 'token 已失效')
       } else {
-        ctx.body = {
-          status: 300
-        }
         next()
       }
     })

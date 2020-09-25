@@ -1,17 +1,26 @@
 const Koa = require('koa')
 const os = require('os')
+const path = require('path')
 const cors = require('@koa/cors')
+const serve = require('koa-static')
 const logger = require('koa-logger')
 const compress = require('koa-compress')
 const koaBody = require('koa-body')
 const { koaSwagger } = require('koa2-swagger-ui')
-const { tokenVerification } = require('./public/jwt')
+const { tokenVerification } = require('./plugins/jwt')
 
 global.secretOrPrivateKey = 'xstxhjh'
 
 const app = new Koa()
 app.use(cors())
 // 数据处理，支持文件上传 https://github.com/dlau/koa-body
+
+const staticPath = './static'
+// 静态资源
+app.use(serve(
+  path.join(__dirname, staticPath)
+))
+
 app.use(logger())
 // 日志
 app.use(koaBody())
@@ -28,7 +37,7 @@ app.use(koaSwagger({
 const swagger = require('../util/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
 
-// 全局捕获错误
+// 全局捕获错误 中间件
 require('../util/errorCatch.js')(app)
 
 // 校验token
@@ -38,8 +47,11 @@ require('./routers/index.js')(app)
 
 app.use((ctx) => {
   // 返回数据格式处理
-  const status = ctx.body && ctx.body.status
-  Reflect.deleteProperty(ctx.body, 'status')
+  let status = 0
+  if (Object.prototype.toString.call(ctx.body) === '[Object Object]') {
+    status = ctx.body.status
+    Reflect.deleteProperty(ctx.body, 'status')
+  }
   ctx.body = {
     status: status || 200,
     data: ctx.body

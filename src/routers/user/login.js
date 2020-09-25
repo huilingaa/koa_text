@@ -1,4 +1,4 @@
-const { jsonwebtokenSign } = require('../../public/jwt')
+const { jsonwebtokenSign } = require('../../plugins/jwt')
 
 /**
    * @swagger
@@ -15,5 +15,6 @@ module.exports = async router => {
     ctx.body = jsonwebtokenSign({
       name: 'hjh'
     })
+    next()
   })
 }
