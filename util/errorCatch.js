@@ -8,6 +8,7 @@ module.exports = async app => {
     }
   })
   app.on('error', (err, ctx) => {
+    console.log(err)
     ctx.body = {
       message: err.message,
       status: err.status || 500

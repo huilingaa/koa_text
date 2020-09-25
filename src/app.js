@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const os = require('os')
 const cors = require('@koa/cors')
+const logger = require('koa-logger')
 const compress = require('koa-compress')
 const koaBody = require('koa-body')
 const { koaSwagger } = require('koa2-swagger-ui')
@@ -11,6 +12,8 @@ global.secretOrPrivateKey = 'xstxhjh'
 const app = new Koa()
 app.use(cors())
 // 数据处理，支持文件上传 https://github.com/dlau/koa-body
+app.use(logger())
+// 日志
 app.use(koaBody())
 // gzip 压缩
 app.use(compress({ threshold: 2048 }))
