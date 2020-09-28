@@ -9,15 +9,10 @@
 //   return isEmpty
 // }
 
-function getReqIp (req) {
-  const reqIp =
-      req.headers['x-forwarded-for'] ||
-      req.connection.remoteAddress ||
-      req.socket.remoteAddress ||
-      req.connection.socket.remoteAddress
+function getCtxIp (ctxIp) {
   let matchIp = null
   try {
-    matchIp = reqIp.match(/\d+\.\d+\.\d+\.\d+/)[0]
+    matchIp = ctxIp.match(/\d+\.\d+\.\d+\.\d+/)[0]
   } catch {
     matchIp = '127.0.0.1'
   }
@@ -26,5 +21,5 @@ function getReqIp (req) {
 
 module.exports = {
   // isReceiveEmptys,
-  getReqIp
+  getCtxIp
 }

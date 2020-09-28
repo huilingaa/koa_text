@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { getReqIp } = require('./common')
+const { getCtxIp } = require('./common')
 
 const noVerificationRouters = ['/login']
 // 不校验token的路由
@@ -7,7 +7,7 @@ const noVerificationRouters = ['/login']
 // 校验请求者的token 中间件
 function tokenVerification () {
   return async (ctx, next) => {
-    const ip = getReqIp(ctx.req)
+    const ip = getCtxIp(ctx.ip)
     const token = ctx.get('token')
 
     if (noVerificationRouters.includes(ctx.url)) {
