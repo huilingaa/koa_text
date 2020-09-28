@@ -7,17 +7,16 @@ const noVerificationRouters = ['/login']
 // 校验请求者的token 中间件
 function tokenVerification () {
   return async (ctx, next) => {
-    const ip = getCtxIp(ctx.ip)
     const token = ctx.get('token')
 
     if (noVerificationRouters.includes(ctx.url)) {
       next()
       return
     }
-    console.log(ip, token)
 
     jwt.verify(token, global.secretOrPrivateKey, (err, decode) => {
-      if (err) {
+      const ip = getCtxIp(ctx.ip)
+      if (err || decode.ip !== ip) {
         ctx.throw('400', 'token 已失效')
       } else {
         next()

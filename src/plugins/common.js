@@ -1,13 +1,13 @@
 // 判断接收的所有数据是否为空
-// function isReceiveEmptys (...arr) {
-//   let isEmpty = false
-//   arr.map(item => {
-//     if (item == 0) return
-//     if (_.isNaN(item) || _.isNil(item) || item == '') isEmpty = true
-//     if (_.isString(item) && item.trim() == '') isEmpty = true
-//   })
-//   return isEmpty
-// }
+function isReceiveEmptys (...arr) {
+  let isEmpty = false
+  arr.map(item => {
+    if (item == 0) return
+    if (_.isNaN(item) || _.isNil(item) || item == '') isEmpty = true
+    if (_.isString(item) && item.trim() == '') isEmpty = true
+  })
+  return isEmpty
+}
 
 function getCtxIp (ctxIp) {
   let matchIp = null
@@ -20,6 +20,6 @@ function getCtxIp (ctxIp) {
 }
 
 module.exports = {
-  // isReceiveEmptys,
+  isReceiveEmptys,
   getCtxIp
 }

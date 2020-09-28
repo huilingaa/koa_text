@@ -1,4 +1,5 @@
 const { jsonwebtokenSign } = require('../../plugins/jwt')
+const { getCtxIp } = require('../../plugins/common')
 
 /**
    * @swagger
@@ -25,7 +26,8 @@ const { jsonwebtokenSign } = require('../../plugins/jwt')
 module.exports = async router => {
   router.post('/login', (ctx, next) => {
     ctx.body = jsonwebtokenSign({
-      name: 'hjh'
+      name: 'hjh',
+      ip: getCtxIp(ctx.ip)
     })
     next()
   })

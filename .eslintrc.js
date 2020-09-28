@@ -12,5 +12,8 @@ module.exports = {
   rules: {
     'new-cap': 0,
     eqeqeq: 0
+  },
+  globals: {
+    _: true
   }
 }

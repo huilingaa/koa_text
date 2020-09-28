@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const os = require('os')
 const path = require('path')
+const _ = require('lodash')
 const cors = require('@koa/cors')
 const serve = require('koa-static')
 const logger = require('koa-logger')
@@ -10,6 +11,7 @@ const { koaSwagger } = require('koa2-swagger-ui')
 const { tokenVerification } = require('./plugins/jwt')
 
 global.secretOrPrivateKey = 'xstxhjh'
+global._ = _
 
 const app = new Koa()
 app.use(cors())
@@ -44,19 +46,6 @@ require('../util/errorCatch.js')(app)
 app.use(tokenVerification())
 
 require('./routers/index.js')(app)
-
-app.use((ctx) => {
-  // 返回数据格式处理
-  let status = 0
-  if (Object.prototype.toString.call(ctx.body) === '[Object Object]') {
-    status = ctx.body.status
-    Reflect.deleteProperty(ctx.body, 'status')
-  }
-  ctx.body = {
-    status: status || 200,
-    data: ctx.body
-  }
-})
 
 /* 启动 */
 const port = 3000

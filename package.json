@@ -13,6 +13,7 @@
     "koa-logger": "^3.2.1",
     "koa-static": "^5.0.0",
     "koa2-swagger-ui": "^5.0.2",
+    "lodash": "^4.17.20",
     "nodemon": "^2.0.4",
     "swagger-jsdoc": "^4.0.0"
   },
