@@ -13,6 +13,8 @@ const { tokenVerification } = require('./plugins/jwt')
 global.secretOrPrivateKey = 'xstxhjh'
 global._ = _
 
+require('./plugins/db')() // 连接数据库
+
 const app = new Koa()
 app.use(cors())
 // 数据处理，支持文件上传 https://github.com/dlau/koa-body
@@ -36,16 +38,16 @@ app.use(koaSwagger({
     url: '/swagger.json'
   }
 }))
-const swagger = require('../util/swagger')
+const swagger = require('./util/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
 
 // 全局捕获错误 中间件
-require('../util/errorCatch.js')(app)
+require('./util/errorCatch.js')(app)
 
 // 校验token
 app.use(tokenVerification())
 
-require('./routers/index.js')(app)
+require('./util/routersApi.js')(app)
 
 /* 启动 */
 const port = 3000
