@@ -8,7 +8,13 @@ module.exports = async app => {
     try {
       await next()
       if (!ctx.body) {
-        ctx.throw('400', '路由不存在')
+        ctx.throw('400', '请设置body值')
+      }
+      let msg = ctx.message
+      ctx.body = {
+        data: ctx.body,
+        message: msg,
+        status: 200
       }
     } catch (err) {
       ctx.app.emit('error', err, ctx)
@@ -16,7 +22,6 @@ module.exports = async app => {
   })
 
   app.on('error', (err, ctx) => {
-    console.log(err)
     ctx.body = {
       message: err.message,
       status: err.status || 500

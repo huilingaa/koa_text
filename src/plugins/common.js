@@ -2,7 +2,7 @@
 function isReceiveEmptys (...arr) {
   let isEmpty = false
   arr.map(item => {
-    if (item == 0) return
+    if (item === 0) return
     if (_.isNaN(item) || _.isNil(item) || item == '') isEmpty = true
     if (_.isString(item) && item.trim() == '') isEmpty = true
   })

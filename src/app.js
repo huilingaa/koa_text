@@ -41,7 +41,7 @@ app.use(koaSwagger({
 const swagger = require('./util/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
 
-// 全局捕获错误 中间件
+// 全局捕获错误及数据返回格式处理 中间件
 require('./util/errorCatch.js')(app)
 
 // 校验token
