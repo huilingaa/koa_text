@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 // Schema,一种以文件形式存储的数据库模型骨架,不具备数据库的操作能力
 const schema = new mongoose.Schema(
   {
-    id: String,            //账号
+    username: String,      //账号
     password: String,      // 密码
     phone:String,
     name:String,
     openid:{
         type: String,
-        default: '1'
+        default: '0'
     },
     role_id:{              // 账号角色id
         type: mongoose.Schema.ObjectId,
@@ -21,4 +21,3 @@ const schema = new mongoose.Schema(
 
 // Model,由Schema发布生成的模型,具有抽象属性和行为的数据库操作
 module.exports = mongoose.model('User', schema)
-x

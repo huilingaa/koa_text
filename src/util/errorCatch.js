@@ -1,7 +1,3 @@
-
-// 删除对象下面的某个属性，可以使用
-// Reflect.deleteProperty(ctx.body, 'status')
-
 module.exports = async app => {
   app.use(async (ctx, next) => {
     ctx.status = 200
