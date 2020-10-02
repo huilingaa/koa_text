@@ -4,7 +4,7 @@ module.exports = async app => {
     try {
       await next()
       if (!ctx.body) {
-        ctx.throw('400', '请设置body值')
+        ctx.throw(404, '未找到该接口')
       }
       let msg = ctx.message
       ctx.body = {
