@@ -1,5 +1,6 @@
 const { jsonwebtokenSign } = require('../../plugins/jwt')
 const { isReceiveEmptys, getCtxIp } = require('../../plugins/common')
+const { Public } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
 
@@ -13,16 +14,8 @@ module.exports = async router => {
      *       200:
      *         data: 职位类型list
   */
-  router.post('/login', async (ctx, next) => {
-    console.log(ctx.request.files)
-    const { username, password } = ctx.request.body
-    if (isReceiveEmptys(username, password)) {
-      ctx.throw('400', '用户名或密码不能为空')
-    }
-    ctx.body = jsonwebtokenSign({
-      name: 'hjh',
-      ip: getCtxIp(ctx.ip)
-    })
+  router.post('/find_job_type', async (ctx, next) => {
+
     await next()
   })
 }

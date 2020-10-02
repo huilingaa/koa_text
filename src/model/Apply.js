@@ -22,4 +22,4 @@ const schema = new mongoose.Schema(
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, versionKey: false },
 )
 
-module.exports = mongoose.model('User', schema)
+module.exports = mongoose.model('Apply', schema)

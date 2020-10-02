@@ -38,16 +38,16 @@ app.use(koaSwagger({
     url: '/swagger.json'
   }
 }))
-const swagger = require('./util/swagger')
+const swagger = require('./utils/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
 
 // 全局捕获错误及数据返回格式处理 中间件
-require('./util/errorCatch.js')(app)
+require('./utils/errorCatch.js')(app)
 
 // 校验token
 app.use(tokenVerification())
 
-require('./util/routersApi.js')(app)
+require('./utils/routersApi.js')(app)
 
 /* 启动 */
 const port = 3000
