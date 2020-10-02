@@ -12,7 +12,7 @@ const swaggerDefinition = {
 }
 const options = {
   swaggerDefinition,
-  apis: [path.join(__dirname, '../src/routers/*/*.js')]
+  apis: [path.join(__dirname, '../routers/*/*.js')]
 }
 const swaggerSpec = swaggerJSDoc(options)
 // 通过路由获取生成的注解文件

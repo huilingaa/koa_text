@@ -10,14 +10,11 @@ const schema = new mongoose.Schema(
     content: String,                // 富文本 招聘描述
     status: String,                 // 审核状态
     data_type: String,              // 数据类型 1申请 2导入JSON
+    job_type_id: String,            // 职位类型id
     view_total: Number,             // 查看统计 
     tags: Array,                    // 岗位标签
     files: Array,                   // 上传文件
-    job_type_id: {                  // 职位类型id
-      type: mongoose.Schema.ObjectId,
-      ref: 'JobType'
-    },
-    user_id: {                       // 账号id
+    user_id: {                      // 账号id
       type: mongoose.Schema.ObjectId,
       ref: 'User'
     }

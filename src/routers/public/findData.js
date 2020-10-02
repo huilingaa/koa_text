@@ -5,28 +5,16 @@ module.exports = async router => {
 
   /**
      * @swagger
-     * /login:
-     *   required:
-     *     - username
-     *     - password
-     *   post:
+     * /find_job_type:
+     *   get:
      *     description: 登录获取token
-     *     tags: [User]
-     *     parameters:
-     *       - name: username
-     *         type: string
-     *         required: true
-     *         description: 用户账号
-     *       - name: password
-     *         type: string
-     *         required: true
-     *         description: 用户密码
+     *     tags: [jobType]
      *     responses:
      *       200:
-     *         description: 返回用户信息及token
+     *         data: 职位类型list
   */
- 
   router.post('/login', async (ctx, next) => {
+    console.log(ctx.request.files)
     const { username, password } = ctx.request.body
     if (isReceiveEmptys(username, password)) {
       ctx.throw('400', '用户名或密码不能为空')

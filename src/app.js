@@ -27,7 +27,7 @@ app.use(serve(
 
 app.use(logger())
 // 日志
-app.use(koaBody())
+app.use(koaBody({ multipart: true }))
 // gzip 压缩
 app.use(compress({ threshold: 2048 }))
 
