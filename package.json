@@ -16,7 +16,8 @@
     "lodash": "^4.17.20",
     "mongoose": "^5.10.7",
     "nodemon": "^2.0.4",
-    "swagger-jsdoc": "^4.0.0"
+    "swagger-jsdoc": "^4.0.0",
+    "xlsx": "^0.16.7"
   },
   "devDependencies": {
     "eslint": "^7.9.0",

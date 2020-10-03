@@ -6,6 +6,7 @@ const schema = new mongoose.Schema(
     company_name: String,           // 公司名称
     company_address: String,        // 公司地址
     phone: String,                  // 手机号
+    people:String,                  // 联系人
     email: String,                  // 邮箱
     content: String,                // 富文本 招聘描述
     status: String,                 // 审核状态

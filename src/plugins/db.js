@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 
 module.exports = () => {
-  const user = 'admin'
+  const user = 'employment'
   const password = 'ctkj.mc123'
-  const DB_URL = `mongodb://${user}:${password}@127.0.0.1:27017/employment`
+  const DB_URL = `mongodb://${user}:${password}@101.132.166.73:27017/employment`
   const config = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
