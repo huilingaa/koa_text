@@ -5,24 +5,25 @@ const noVerificationRouters = ['/login']
 // 不校验token的路由
 
 // 校验请求者的token 中间件
-function tokenVerification() {
-  return async (ctx, next) => {
-    const token = ctx.get('token')
+const tokenVerification = async (ctx, next) => {
+  const token = ctx.get('token')
 
-    if (noVerificationRouters.includes(ctx.url)) {
-      await next()
-      return
-    }
-
-    jwt.verify(token, global.secretOrPrivateKey, async (err, decode) => {
-      const ip = getCtxIp(ctx.ip)
-      if (err || decode.ip !== ip) {
-        ctx.throw('400', 'token 已失效')
-      } else {
-        await next()
-      }
-    })
+  if (
+    noVerificationRouters.includes(ctx.url)
+    || ctx.url.includes('/weapp')
+  ) {
+    await next()
+    return
   }
+
+  await jwt.verify(token, global.secretOrPrivateKey, async (err, decode) => {
+    const ip = getCtxIp(ctx.ip)
+    if (err || decode.ip !== ip) {
+      ctx.throw('400', 'token 已失效')
+    } else {
+      await next()
+    }
+  })
 }
 
 function jsonwebtokenSign(data = {}) {

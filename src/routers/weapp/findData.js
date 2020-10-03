@@ -1,5 +1,4 @@
 const { isReceiveEmptys } = require('../../plugins/common')
-const { Public } = require('../../utils/dbModelExports')
 const jobType = require('../../data/jobType')
 
 module.exports = async router => {
@@ -14,7 +13,7 @@ module.exports = async router => {
      *       200:
      *         data: 职位类型list
   */
-  router.get('/find_job_type', async (ctx, next) => {
+  router.get('/weapp/find_job_type', async (ctx, next) => {
     ctx.body = jobType
     await next()
   })

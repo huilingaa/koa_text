@@ -16,8 +16,11 @@ global._ = _
 require('./plugins/db')() // 连接数据库
 
 const app = new Koa()
+
+// 全局捕获错误及数据返回格式处理 中间件
+require('./utils/errorCatch.js')(app)
+
 app.use(cors())
-// 数据处理，支持文件上传 https://github.com/dlau/koa-body
 
 const staticPath = './static'
 // 静态资源
@@ -25,11 +28,20 @@ app.use(serve(
   path.join(__dirname, staticPath)
 ))
 
-app.use(logger())
 // 日志
+app.use(logger())
+
+// 数据处理，支持文件上传 https://github.com/dlau/koa-body
 app.use(koaBody({ multipart: true }))
+
 // gzip 压缩
 app.use(compress({ threshold: 2048 }))
+
+// 校验token
+app.use(tokenVerification)
+
+require('./utils/routersApi.js')(app)
+
 
 // 生成api文档
 app.use(koaSwagger({
@@ -40,14 +52,6 @@ app.use(koaSwagger({
 }))
 const swagger = require('./utils/swagger')
 app.use(swagger.routes(), swagger.allowedMethods())
-
-// 全局捕获错误及数据返回格式处理 中间件
-require('./utils/errorCatch.js')(app)
-
-// 校验token
-app.use(tokenVerification())
-
-require('./utils/routersApi.js')(app)
 
 /* 启动 */
 const port = 3000
