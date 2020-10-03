@@ -8,11 +8,14 @@ module.exports = async router => {
      * @swagger
      * /find_job_type:
      *   get:
-     *     description: 登录获取token
-     *     tags: [jobType]
+     *     description: 获取所有职位类型
+     *     tags: [public]
      *     responses:
      *       200:
-     *         data: 职位类型list
+     *         description: 职位类型list
+     *         schema:
+     *           example:
+     *              {"data": [{"name":"职位名","key":"icon"}]}
   */
   router.get('/find_job_type', async (ctx, next) => {
     ctx.body = jobType

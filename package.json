@@ -28,7 +28,7 @@
     "eslint-plugin-standard": "^4.0.1"
   },
   "scripts": {
-    "start": "./node_modules/.bin/nodemon ./src/app.js",
+    "start": "./node_modules/.bin/nodemon ./src/app.js --config",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "hjh",

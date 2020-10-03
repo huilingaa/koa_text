@@ -6,9 +6,6 @@ module.exports = async router => {
   /**
      * @swagger
      * /login:
-     *   required:
-     *     - username
-     *     - password
      *   post:
      *     description: 登录获取token
      *     tags: [User]
@@ -24,6 +21,9 @@ module.exports = async router => {
      *     responses:
      *       200:
      *         description: 返回用户信息及token
+     *         schema:
+     *           example:
+     *              {"data": ""}
   */
  
   router.post('/login', async (ctx, next) => {

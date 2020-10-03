@@ -3,12 +3,10 @@ const router = require('@koa/router')() // 引入路由函数
 const swaggerJSDoc = require('swagger-jsdoc')
 const swaggerDefinition = {
   info: {
-    title: '接口',
+    title: '武职快聘 API文档',
     version: '1.0.0',
     description: 'API'
   },
-  host: 'localhost:3000',
-  basePath: '/'
 }
 const options = {
   swaggerDefinition,

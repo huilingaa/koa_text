@@ -7,11 +7,11 @@ const serve = require('koa-static')
 const logger = require('koa-logger')
 const compress = require('koa-compress')
 const koaBody = require('koa-body')
-const { koaSwagger } = require('koa2-swagger-ui')
 const { tokenVerification } = require('./plugins/jwt')
 
 global.secretOrPrivateKey = 'xstxhjh'
 global._ = _
+global.devEnv = process.env.NODE_ENV == 'development'
 
 require('./plugins/db')() // 连接数据库
 
@@ -44,14 +44,17 @@ require('./utils/routersApi.js')(app)
 
 
 // 生成api文档
-app.use(koaSwagger({
-  routePrefix: '/swagger',
-  swaggerOptions: {
-    url: '/swagger.json'
-  }
-}))
-const swagger = require('./utils/swagger')
-app.use(swagger.routes(), swagger.allowedMethods())
+if (devEnv) {
+  const { koaSwagger } = require('koa2-swagger-ui')
+  app.use(koaSwagger({
+    routePrefix: '/swagger.html',
+    swaggerOptions: {
+      url: '/swagger.json'
+    }
+  }))
+  const swagger = require('./utils/swagger')
+  app.use(swagger.routes(), swagger.allowedMethods())
+}
 
 /* 启动 */
 const port = 3000
