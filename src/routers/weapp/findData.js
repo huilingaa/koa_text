@@ -85,15 +85,50 @@ module.exports = async router => {
      *           example:
      *              {"data": {} }
   */
- router.post('/weapp/find_job_details', async (ctx, next) => {
-  const { id } = ctx.request.body
-  if (isReceiveEmptys(id)) {
-    ctx.throw('400', '请传入岗位id')
-  }
+  router.post('/weapp/find_job_details', async (ctx, next) => {
+    const { id } = ctx.request.body
+    if (isReceiveEmptys(id)) {
+      ctx.throw('400', '请传入岗位id')
+    }
 
-  let data = await Apply.findById(id)
-  ctx.body = data
+    let data = await Apply.findById(id)
+    ctx.body = data
 
-  await next()
-})
+    await next()
+  })
+
+  /**
+     * @swagger
+     * /weapp/find_job_list:
+     *   post:
+     *     description: 小程序获取岗位列表
+     *     tags: [weapp]
+     *     parameters:
+     *       - name: keyword
+     *         type: string
+     *         description: 根据关键词搜索岗位
+     *     responses:
+     *       200:
+     *         description: 岗位列表00数据
+     *         schema:
+     *           example:
+     *              {"data": [] }
+  */
+  router.post('/weapp/find_job_list', async (ctx, next) => {
+    const { keyword } = ctx.request.body || ''
+    const reg = new RegExp(keyword, 'i')
+    let data = await Apply.find({
+      $or: [
+        { job_name: { $regex: reg } },
+        { company_name: { $regex: reg } },
+        { company_address: { $regex: reg } },
+        { people: { $regex: reg } },
+        { content: { $regex: reg } },
+        { tags: { $regex: reg } }
+      ]
+    }).sort({ created_at: -1 }).limit(10)
+    ctx.body = data
+
+    await next()
+  })
 }
