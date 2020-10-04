@@ -9,8 +9,9 @@ module.exports = async app => {
 
       if(!ctx.url.includes('.')) {
         let msg = ctx.message
+        let data = ctx.body
         ctx.body = {
-          data: ctx.body,
+          data: data,
           message: msg,
           status: 200
         }

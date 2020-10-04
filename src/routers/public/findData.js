@@ -1,6 +1,6 @@
 const { isReceiveEmptys } = require('../../plugins/common')
-const { Public } = require('../../utils/dbModelExports')
 const jobType = require('../../data/jobType')
+const { Public } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
 

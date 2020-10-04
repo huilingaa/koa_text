@@ -35,7 +35,12 @@ app.use(logger())
 app.use(koaBody({ multipart: true }))
 
 // gzip 压缩
-app.use(compress({ threshold: 2048 }))
+app.use(compress({
+  filter: function (content_type) {
+    return /text/i.test(content_type);
+  },
+  threshold: 2048
+}))
 
 // 校验token
 app.use(tokenVerification)
