@@ -66,4 +66,34 @@ module.exports = async router => {
 
     await next()
   })
+
+  /**
+     * @swagger
+     * /weapp/find_job_details:
+     *   post:
+     *     description: 小程序获取岗位详情
+     *     tags: [weapp]
+     *     parameters:
+     *       - name: id
+     *         type: string
+     *         required: true
+     *         description: 该岗位的_id
+     *     responses:
+     *       200:
+     *         description: 岗位详情数据
+     *         schema:
+     *           example:
+     *              {"data": {} }
+  */
+ router.post('/weapp/find_job_details', async (ctx, next) => {
+  const { id } = ctx.request.body
+  if (isReceiveEmptys(id)) {
+    ctx.throw('400', '请传入岗位id')
+  }
+
+  let data = await Apply.findById(id)
+  ctx.body = data
+
+  await next()
+})
 }
