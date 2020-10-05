@@ -15,7 +15,6 @@ const schema = new mongoose.Schema(
     data_type: String,              // 数据类型 1申请 2导入JSON
     view_total: Number,             // 查看统计 
     tags: Array,                    // 岗位标签
-    files: Array,                   // 上传文件
     user_id: {                      // 账号id
       type: mongoose.Schema.ObjectId,
       ref: 'User'

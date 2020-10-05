@@ -54,7 +54,7 @@ module.exports = async router => {
     }
 
     let data = await Apply.find({
-      status: '1',
+      status: 1,
     }, {
       job_name: 1,
       company_name: 1,
@@ -107,28 +107,54 @@ module.exports = async router => {
      *       - name: keyword
      *         type: string
      *         description: 根据关键词搜索岗位
+     *       - name: page
+     *         type: string
+     *         description: 分页数据
      *     responses:
      *       200:
-     *         description: 岗位列表00数据
+     *         description: 岗位列表数据
      *         schema:
      *           example:
      *              {"data": [] }
   */
   router.post('/weapp/find_job_list', async (ctx, next) => {
-    const { keyword } = ctx.request.body || ''
-    const reg = new RegExp(keyword, 'i')
-    let data = await Apply.find({
-      $or: [
-        { job_name: { $regex: reg } },
-        { company_name: { $regex: reg } },
-        { company_address: { $regex: reg } },
-        { people: { $regex: reg } },
-        { content: { $regex: reg } },
-        { tags: { $regex: reg } }
-      ]
-    }).sort({ created_at: -1 }).limit(10)
-    ctx.body = data
+    const { keyword, page } = ctx.request.body || ''
+    if (isReceiveEmptys(page)) {
+      ctx.throw('400', '请输入数据页码')
+    }
+    let limit = 10
+    let data = []
+    let returnOpt = {
+      job_name: 1,
+      company_name: 1,
+      company_size: 1,
+      company_address: 1,
+      tags: 1
+    }
+    let hasJobType = false
+    jobType.map(item => {
+      if (item.key == keyword) hasJobType = true
+    })
 
+    if (hasJobType) {
+      data = await Apply.find({ job_type_id: keyword, status: 1 }, returnOpt)
+        .sort({ created_at: -1 }).limit(limit).skip((page - 1) * 10)
+    } else {
+      const reg = new RegExp(keyword, 'i')
+      data = await Apply.find({
+        status: 1,
+        $or: [
+          { job_name: { $regex: reg } },
+          { company_name: { $regex: reg } },
+          { company_address: { $regex: reg } },
+          { people: { $regex: reg } },
+          { content: { $regex: reg } },
+          { tags: { $regex: reg } }
+        ]
+      }, returnOpt).sort({ created_at: -1 }).limit(limit).skip((page - 1) * 10)
+    }
+
+    ctx.body = data
     await next()
   })
 }
