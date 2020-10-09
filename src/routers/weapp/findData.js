@@ -3,7 +3,6 @@ const jobType = require('../../data/jobType')
 const { Apply } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
-
   /**
      * @swagger
      * /weapp/find_job_type:
@@ -18,7 +17,27 @@ module.exports = async router => {
      *              {"data": [{"name":"职位名","key":"icon"}]}
   */
   router.get('/weapp/find_job_type', async (ctx, next) => {
-    ctx.body = jobType
+    const jobTypeList = jobType.map(item => {
+      item.count = 0
+      return item
+    })
+    const data = await Apply.find({
+      status: 1
+    }, {
+      job_type_id: 1,
+      _id: 0
+    })
+    jobTypeList.map(jItem => {
+      data.map(item => {
+        if (item.job_type_id == jItem.key) {
+          jItem.count++
+        } else if (item.job_type_id == '' && jItem.key == 'other') {
+          jItem.count++
+        }
+        return jItem
+      })
+    })
+    ctx.body = jobTypeList
     await next()
   })
 
@@ -46,15 +65,13 @@ module.exports = async router => {
       ctx.throw('400', '请传入获取数据type')
     }
 
-    const jobTypeData = _.cloneDeep(jobType)
-
     let sort = { created_at: -1 }
     if (type == 2) {
       sort = { view_total: -1 }
     }
 
-    let data = await Apply.find({
-      status: 1,
+    const data = await Apply.find({
+      status: 1
     }, {
       job_name: 1,
       company_name: 1,
@@ -91,7 +108,7 @@ module.exports = async router => {
       ctx.throw('400', '请传入岗位id')
     }
 
-    let data = await Apply.findById(id)
+    const data = await Apply.findById(id)
     ctx.body = data
 
     await next()
@@ -122,9 +139,9 @@ module.exports = async router => {
     if (isReceiveEmptys(page)) {
       ctx.throw('400', '请输入数据页码')
     }
-    let limit = 10
+    const limit = 10
     let data = []
-    let returnOpt = {
+    const returnOpt = {
       job_name: 1,
       company_name: 1,
       company_size: 1,
