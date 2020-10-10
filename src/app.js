@@ -37,7 +37,7 @@ app.use(koaBody({ multipart: true }))
 // gzip 压缩
 app.use(compress({
   filter: function (content_type) {
-    return /text/i.test(content_type);
+    return /text/i.test(content_type)
   },
   threshold: 2048
 }))
@@ -46,7 +46,6 @@ app.use(compress({
 app.use(tokenVerification)
 
 require('./utils/routersApi.js')(app)
-
 
 // 生成api文档
 if (devEnv) {
