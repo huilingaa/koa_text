@@ -20,8 +20,9 @@ module.exports = async router => {
         }
         console.log(data.length)
         data.map(item =>{
-            item.job_name = item['单位名称'] || 1
-            item.company_name = item['招聘公告名称']
+            item.job_name =  item['招聘公告名称'] 
+            item.company_name = item['单位名称'] || 1
+            item.company_size = ''
             item.company_address = item['工作城市']
             item.phone = item['联系电话'] || ''
             item.people = item['单位联系人'] || ''
@@ -31,8 +32,8 @@ module.exports = async router => {
             item.data_type = '2'              // 数据类型 1申请 2导入JSON
             item.job_type_id = ''            // 职位类型id
             item.view_total = '0'             // 查看统计 
-            item.tags = ''                  // 岗位标签
-            item.files = ''                   // 上传文件'
+            item.tags = []                  // 岗位标签
+            item.files = []                   // 上传文件'
             Reflect.deleteProperty(item, '编号')
             Reflect.deleteProperty(item, '招聘公告名称')
             Reflect.deleteProperty(item, '招聘公告详情')
@@ -49,7 +50,7 @@ module.exports = async router => {
             return item
         })
         let datas = data.filter(item =>{
-            return item.job_name != '1'
+            return (item.company_name != '1' && item.content)
         })
         let list = await Apply.insertMany(datas)
         ctx.body = list

@@ -60,10 +60,10 @@ if (devEnv) {
 }
 
 /* 启动 */
-const port = 3000
+const port = 8811
 const network = os.networkInterfaces()
 const localhost = network[Object.keys(network)[0]][1].address
-app.listen(3000, () => {
+app.listen(8811, () => {
   console.log(`运行中: http://localhost:${port}`)
   console.log(`        http://${localhost}:${port}`)
 })
