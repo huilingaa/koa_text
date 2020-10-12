@@ -14,7 +14,6 @@ global._ = _
 global.devEnv = process.env.NODE_ENV == 'development'
 
 require('./plugins/db')() // 连接数据库
-
 const app = new Koa()
 
 // 全局捕获错误及数据返回格式处理 中间件
@@ -36,8 +35,8 @@ app.use(koaBody({ multipart: true }))
 
 // gzip 压缩
 app.use(compress({
-  filter: function (content_type) {
-    return /text/i.test(content_type)
+  filter: function (contentType) {
+    return /text/i.test(contentType)
   },
   threshold: 2048
 }))

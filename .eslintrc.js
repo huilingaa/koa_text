@@ -14,6 +14,7 @@ module.exports = {
     eqeqeq: 0
   },
   globals: {
-    _: true
+    _: true,
+    devEnv: true
   }
 }

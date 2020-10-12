@@ -214,12 +214,16 @@ FastScanner.prototype.search = function search (content, options) {
 
 module.exports = FastScanner
 
-// const FastScanner = require('./plugins/fastScan')
+// 查询匹配的词汇以及所在字符串的位置 search(content, option={})
+// 查询匹配词汇的命中数量 hits(content, options={})
+// 临时动态增加词汇，不修正其它词汇的回溯指针 add(word)
+// options = {quick: false, longest: false}
+// quick 选项表示快速模式，匹配到一个就立即返回
+// longest 表示最长模式，同一个位置出现多个词汇(中国、中国人)，选择最长的一个(中国人)
+// 默认匹配出所有的词汇，同一个位置可能会出现多个词汇
 
-// const words = ['今日头条', '微信', '支付宝']
+// const FastScanner = require('./plugins/fastScan')
+// const words = require('./plugins/keywords.js')
 // const scanner = new FastScanner(words)
-// const content = '今日头条小程序终于来了，这是继微信、支付宝、百度后，第四个推出小程序功能的App。猫眼电影率先试水，出现在今日头条。'
-// const offWords = scanner.search(content)
-// console.log(offWords)
-// const hits = scanner.hits(content)
-// console.log(hits)
+// const content = '今日头条小程序终于来了，这是继微信、支付宝、百度后，第四个推出小程序功能的App。猫眼电影率先试水，出现在今日头条。贱人'
+// const search = scanner.search(content)
