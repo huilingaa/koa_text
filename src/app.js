@@ -1,5 +1,4 @@
 const Koa = require('koa')
-const os = require('os')
 const path = require('path')
 const _ = require('lodash')
 const cors = require('@koa/cors')
@@ -61,9 +60,6 @@ if (devEnv) {
 
 /* 启动 */
 const port = 8812
-const network = os.networkInterfaces()
-const localhost = network[Object.keys(network)[0]][1].address
 app.listen(8812, () => {
   console.log(`运行中: http://localhost:${port}`)
-//   console.log(`        http://${localhost}:${port}`)
 })

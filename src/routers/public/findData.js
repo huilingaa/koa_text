@@ -3,7 +3,6 @@ const jobType = require('../../data/jobType')
 const { Public } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
-
   /**
      * @swagger
      * /find_job_type:

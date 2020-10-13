@@ -2,7 +2,6 @@ const { jsonwebtokenSign } = require('../../plugins/jwt')
 const { isReceiveEmptys, getCtxIp } = require('../../plugins/common')
 
 module.exports = async router => {
-
   /**
      * @swagger
      * /login:
@@ -25,7 +24,7 @@ module.exports = async router => {
      *           example:
      *              {"data": ""}
   */
- 
+
   router.post('/login', async (ctx, next) => {
     const { username, password } = ctx.request.body
     if (isReceiveEmptys(username, password)) {

@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken')
 const { getCtxIp } = require('./common')
 
 const noVerificationRouters = ['/login',
-    '/upload_xlsx',
-    '/set_apply'
+  '/upload_xlsx',
+  '/set_apply'
 ]
 // 不校验token的路由
 

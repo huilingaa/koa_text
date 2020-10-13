@@ -7,9 +7,9 @@ module.exports = async app => {
         ctx.throw(404, '未找到该接口')
       }
 
-      if(!ctx.url.includes('.')) {
-        let msg = ctx.message
-        let data = ctx.body
+      if (!ctx.url.includes('.')) {
+        const msg = ctx.message
+        const data = ctx.body
         ctx.body = {
           data: data,
           message: msg,

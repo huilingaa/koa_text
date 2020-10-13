@@ -6,7 +6,7 @@ const swaggerDefinition = {
     title: '武职快聘 API文档',
     version: '1.0.0',
     description: 'API'
-  },
+  }
 }
 const options = {
   swaggerDefinition,
