@@ -58,8 +58,6 @@ if (devEnv) {
   app.use(swagger.routes(), swagger.allowedMethods())
 }
 
-console.log(process.env.NODE_ENV)
-
 /* 启动 */
 const port = 8812
 app.listen(8812, () => {

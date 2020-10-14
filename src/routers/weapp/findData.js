@@ -126,6 +126,7 @@ module.exports = async router => {
      *         description: 根据关键词搜索岗位
      *       - name: page
      *         type: string
+     *         required: true
      *         description: 分页数据
      *     responses:
      *       200:
