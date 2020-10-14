@@ -5,11 +5,14 @@ let arr = [{
   name: '产品类',
   key: 'product',
 }, {
-  name: '设计类',
-  key: 'design',
+  name: '兼职类',
+  key: 'concurrent',
 }, {
   name: '其它类',
   key: 'other',
+}, {
+  name: '设计类',
+  key: 'design',
 }, {
   name: '内容类',
   key: 'content',
