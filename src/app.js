@@ -60,6 +60,6 @@ if (devEnv) {
 
 /* 启动 */
 const port = 8812
-app.listen(8812, () => {
+app.listen(port, () => {
   console.log(`运行中: http://localhost:${port}`)
 })
