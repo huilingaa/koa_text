@@ -3,12 +3,12 @@ module.exports = async app => {
     ctx.status = 200
     try {
       await next()
-      if (!ctx.body) {
+      if (!ctx.body && !ctx.msg) {
         ctx.throw(404, '未找到该接口')
       }
 
       if (!ctx.url.includes('.')) {
-        const msg = ctx.message
+        const msg = ctx.msg
         const data = ctx.body
         ctx.body = {
           data: data,
@@ -17,14 +17,11 @@ module.exports = async app => {
         }
       }
     } catch (err) {
-      ctx.app.emit('error', err, ctx)
-    }
-  })
-
-  app.on('error', (err, ctx) => {
-    ctx.body = {
-      message: err.message,
-      status: err.status || 500
+      const status = err.status || '500'
+      ctx.body = {
+        message: err.message,
+        status: status
+      }
     }
   })
 }

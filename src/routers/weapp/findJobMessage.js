@@ -36,7 +36,7 @@ module.exports = async router => {
     if (isReceiveEmptys(id, openid, content)) {
       ctx.throw('400', '请传入请求参数')
     }
-
+    
     const message = {
       comment_id: id,
       openid: openid,
@@ -47,10 +47,10 @@ module.exports = async router => {
     }
     const data = await JobMessage.create(message)
     if (data) {
-      ctx.message = '评论成功'
-      return
+      ctx.msg = '评论成功'
+    } else {
+      ctx.throw('400', '评论失败')
     }
-    ctx.throw('400', '评论失败')
     await next()
   })
 }
