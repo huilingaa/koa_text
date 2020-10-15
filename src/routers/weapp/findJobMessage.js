@@ -36,7 +36,7 @@ module.exports = async router => {
     if (isReceiveEmptys(id, openid, content)) {
       ctx.throw('400', '请传入请求参数')
     }
-    
+
     const message = {
       comment_id: id,
       openid: openid,

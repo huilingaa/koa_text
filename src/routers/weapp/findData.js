@@ -1,8 +1,28 @@
+const axios = require('axios')
 const { isReceiveEmptys } = require('../../plugins/common')
 const jobType = require('../../data/jobType')
 const { Apply } = require('../../utils/dbModelExports')
 
+// 微信小程序
+const APP_URL = 'https://api.weixin.qq.com/sns/jscode2session' // 小程序获取openid
+const APP_ID = 'wx5a0de41a9dae1216' // 小程序的app id ，在公众开发者后台可以看到
+const APP_SECRET = 'dd2d8a9e25e9e2c44c99892823104940' // 小程序的app secrect，在公众开发者后台可以看到
+// const APP_URL_CERTFICSTE = 'https://api.weixin.qq.com/cgi-bin/token' // 小程序 生成 凭证
+// const APP_QR_CODE = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' // 小程序生成二维码
+
 module.exports = async router => {
+  // 微信小程序登录
+  router.post('/weapp/weapp_openid', async (ctx, next) => {
+    const code = ctx.request.body.js_code
+    if (isReceiveEmptys(code)) {
+      ctx.throw('400', 'code不能为空')
+    }
+    const url = `${APP_URL}?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
+    const post = await axios.post(url)
+    ctx.body = post.data
+    await next()
+  })
+
   /**
      * @swagger
      * /weapp/find_job_type:
