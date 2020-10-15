@@ -1,5 +1,7 @@
 const { isReceiveEmptys } = require('../../plugins/common')
 const { JobMessage } = require('../../utils/dbModelExports')
+const FastScanner = require('../../plugins/fastScan')
+const words = require('../../plugins/keywords.js')
 
 module.exports = async router => {
   /**
@@ -35,6 +37,12 @@ module.exports = async router => {
     const { id, openid, content, parent } = ctx.request.body
     if (isReceiveEmptys(id, openid, content)) {
       ctx.throw('400', '请传入请求参数')
+    }
+
+    const scanner = new FastScanner(words)
+    const checkPass = scanner.check(content)
+    if (!checkPass) {
+      ctx.throw('400', '回复内容违规')
     }
 
     const message = {

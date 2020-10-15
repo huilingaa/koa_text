@@ -122,8 +122,8 @@ module.exports = async router => {
      *           example:
      *              {"data": {} }
   */
-  router.post('/weapp/find_job_details', async (ctx, next) => {
-    const { id } = ctx.request.body
+  router.get('/weapp/find_job_details', async (ctx, next) => {
+    const { id } = ctx.query
     if (isReceiveEmptys(id)) {
       ctx.throw('400', '请传入岗位id')
     }
@@ -137,7 +137,7 @@ module.exports = async router => {
   /**
      * @swagger
      * /weapp/find_job_list:
-     *   post:
+     *   get:
      *     description: 小程序获取岗位列表
      *     tags: [weapp]
      *     parameters:
@@ -155,8 +155,8 @@ module.exports = async router => {
      *           example:
      *              {"data": [] }
   */
-  router.post('/weapp/find_job_list', async (ctx, next) => {
-    const { keyword, page } = ctx.request.body || ''
+  router.get('/weapp/find_job_list', async (ctx, next) => {
+    const { keyword, page } = ctx.query
     if (isReceiveEmptys(page)) {
       ctx.throw('400', '请输入数据页码')
     }

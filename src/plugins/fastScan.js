@@ -212,6 +212,15 @@ FastScanner.prototype.search = function search (content, options) {
   return offWords
 }
 
+FastScanner.prototype.check = function (content) {
+  const arr = this.search(content)
+  let checkPass = true
+  arr.map(item => {
+    if (item[1].length > 2) checkPass = false
+  })
+  return checkPass
+}
+
 module.exports = FastScanner
 
 // 查询匹配的词汇以及所在字符串的位置 search(content, option={})
@@ -227,3 +236,4 @@ module.exports = FastScanner
 // const scanner = new FastScanner(words)
 // const content = '今日头条小程序终于来了，这是继微信、支付宝、百度后，第四个推出小程序功能的App。猫眼电影率先试水，出现在今日头条。贱人'
 // const search = scanner.search(content)
+// const check = scanner.check(content)
