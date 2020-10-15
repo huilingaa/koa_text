@@ -8,9 +8,9 @@ const schema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'JobMessage'
     },
-    comment_id: { // 岗位id
+    job_id: { // 岗位id
       type: mongoose.Schema.ObjectId,
-      ref: 'Community'
+      ref: 'Apply'
     }
   },
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }, versionKey: false }

@@ -18,7 +18,7 @@ module.exports = async router => {
     *         description: 评论成功
     *         schema:
     *           example:
-    *              {"message": "评论成功"}
+    *              {message: "评论成功"}
     */
   router.post('/weapp/set_user', async (ctx, next) => {
     const { openid, nickname, sex, avatar, city } = ctx.request.body

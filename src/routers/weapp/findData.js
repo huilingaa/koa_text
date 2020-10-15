@@ -11,7 +11,24 @@ const APP_SECRET = 'dd2d8a9e25e9e2c44c99892823104940' // 小程序的app secrect
 // const APP_QR_CODE = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' // 小程序生成二维码
 
 module.exports = async router => {
-  // 微信小程序登录
+  /**
+     * @swagger
+     * /weapp/weapp_openid:
+     *   post:
+     *     description: 小程序获取openid
+     *     tags: [weapp]
+     *     parameters:
+     *       - name: code
+     *         type: string
+     *         required: true
+     *         description: 微信接口获取的js_code
+     *     responses:
+     *       200:
+     *         description: 返回openid
+     *         schema:
+     *           example:
+     *              {data: {session_key: "", openid: ""}}
+  */
   router.post('/weapp/weapp_openid', async (ctx, next) => {
     const code = ctx.request.body.js_code
     if (isReceiveEmptys(code)) {
@@ -34,7 +51,7 @@ module.exports = async router => {
      *         description: 职位类型list
      *         schema:
      *           example:
-     *              {"data": [{"name":"职位名","key":"icon"}]}
+     *              {data: [{name:"职位名",key:"icon"}]}
   */
   router.get('/weapp/find_job_type', async (ctx, next) => {
     const jobTypeList = jobType.map(item => {
@@ -77,7 +94,7 @@ module.exports = async router => {
      *         description: 职位list
      *         schema:
      *           example:
-     *              {"data": [{}]}
+     *              {data: [{}]}
   */
   router.get('/weapp/find_job', async (ctx, next) => {
     const { type } = ctx.query
@@ -120,7 +137,7 @@ module.exports = async router => {
      *         description: 岗位详情数据
      *         schema:
      *           example:
-     *              {"data": {} }
+     *              {data: {} }
   */
   router.get('/weapp/find_job_details', async (ctx, next) => {
     const { id } = ctx.query
@@ -153,7 +170,7 @@ module.exports = async router => {
      *         description: 岗位列表数据
      *         schema:
      *           example:
-     *              {"data": [] }
+     *              {data: [] }
   */
   router.get('/weapp/find_job_list', async (ctx, next) => {
     const { keyword, page } = ctx.query

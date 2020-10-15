@@ -31,7 +31,7 @@ module.exports = async router => {
     *         description: 评论成功
     *         schema:
     *           example:
-    *              {"message": "评论成功"}
+    *              {message: "评论成功"}
     */
   router.post('/weapp/add_job_message', async (ctx, next) => {
     const { id, openid, content, parent } = ctx.request.body
@@ -46,7 +46,7 @@ module.exports = async router => {
     }
 
     const message = {
-      comment_id: id,
+      job_id: id,
       openid: openid,
       content: content
     }
@@ -59,6 +59,43 @@ module.exports = async router => {
     } else {
       ctx.throw('400', '评论失败')
     }
+    await next()
+  })
+
+    /**
+    * @swagger
+    * /weapp/find_job_message:
+    *   get:
+    *     description: 小程序岗位评论列表
+    *     tags: [weapp]
+    *     parameters:
+    *       - name: id
+    *         type: string
+    *         required: true
+    *         description: 岗位id
+    *     responses:
+    *       200:
+    *         description: 评论列表
+    *         schema:
+    *           example:
+    *              {data: []}
+    */
+  router.get('/weapp/find_job_message', async (ctx, next) => {
+    const { id } = ctx.query
+    if (isReceiveEmptys(id)) {
+      ctx.throw('400', '请传入岗位id')
+    }
+
+    const data = await JobMessage.find({
+      job_id: id
+    }, {
+      job_id: 1,
+      content: 1,
+      openid: 1,
+      parent: 1,
+      created_at: 1
+    })
+    ctx.body = data
     await next()
   })
 }
