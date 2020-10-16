@@ -122,9 +122,9 @@ module.exports = async router => {
         }
       ]
     }).lean()
-    data.map(item => {
-      item.job_type_id = jobType.filter()
-    })
+    // data.map(item => {
+    //   item.job_type_id = jobType.filter()
+    // })
     ctx.body = data
     await next()
   })
