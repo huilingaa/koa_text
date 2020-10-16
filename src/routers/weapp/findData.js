@@ -6,7 +6,7 @@ const { Apply } = require('../../utils/dbModelExports')
 // 微信小程序
 const APP_URL = 'https://api.weixin.qq.com/sns/jscode2session' // 小程序获取openid
 const APP_ID = 'wx5f3e2c1986294e38' // 小程序的app id ，在公众开发者后台可以看到
-const APP_SECRET = 'dd2d8a9e25e9e2c44c99892823104940' // 小程序的app secrect，在公众开发者后台可以看到
+const APP_SECRET = '465caff21f325db5b49b2b02613bc793' // 小程序的app secrect，在公众开发者后台可以看到
 // const APP_URL_CERTFICSTE = 'https://api.weixin.qq.com/cgi-bin/token' // 小程序 生成 凭证
 // const APP_QR_CODE = 'https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=' // 小程序生成二维码
 
