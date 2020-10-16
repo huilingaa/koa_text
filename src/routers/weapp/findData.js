@@ -195,7 +195,14 @@ module.exports = async router => {
     })
 
     if (hasJobType) {
-      data = await Apply.find({ job_type_id: keyword, status: 1 }, returnOpt)
+      const fields = {
+        status: 1,
+        $or: [{ job_type_id: keyword }]
+      }
+      if (keyword == 'other') { // 如果为其它类型，获取job_type_id为other或空的数据
+        fields.$or = [{ job_type_id: keyword }, { job_type_id: '' }]
+      }
+      data = await Apply.find(fields, returnOpt)
         .sort({ created_at: -1 }).limit(limit).skip((page - 1) * 10)
     } else {
       const reg = new RegExp(keyword, 'i')
