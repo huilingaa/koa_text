@@ -1,3 +1,5 @@
+// const bcrypt = require('bcrypt')
+// onst crypto = require('crypto');
 const { jsonwebtokenSign } = require('../../plugins/jwt')
 const { isReceiveEmptys, getCtxIp } = require('../../plugins/common')
 const { Encrypt } = require('../../plugins/lock')
