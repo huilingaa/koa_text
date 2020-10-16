@@ -145,7 +145,10 @@ module.exports = async router => {
       ctx.throw('400', '请传入岗位id')
     }
 
-    const data = await Apply.findById(id)
+    const data = await Apply.findById(id).lean()
+
+    // show_message 是否展示岗位详情评论列表
+    data.show_message = true
     ctx.body = data
 
     await next()
