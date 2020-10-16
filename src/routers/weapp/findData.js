@@ -147,6 +147,9 @@ module.exports = async router => {
 
     const data = await Apply.findById(id).lean()
 
+    const total = data.view_total + 1
+    await Apply.updateOne({ _id: data._id }, { view_total: total })
+
     // show_message 是否展示岗位详情评论列表
     data.show_message = true
     ctx.body = data
