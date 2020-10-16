@@ -14,7 +14,8 @@ const tokenVerification = async (ctx, next) => {
   if (
     noVerificationRouters.includes(ctx.url) ||
     ctx.url.includes('/weapp') ||
-    ctx.url.includes('/swagger')
+    ctx.url.includes('/swagger') ||
+    ctx.url.includes('/test')
   ) {
     await next()
     return
