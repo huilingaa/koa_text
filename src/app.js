@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const path = require('path')
 const _ = require('lodash')
+const moment = require('moment')
 const cors = require('@koa/cors')
 const serve = require('koa-static')
 const logger = require('koa-logger')
@@ -11,6 +12,7 @@ const { tokenVerification } = require('./plugins/jwt')
 global.secretOrPrivateKey = 'xstxhjh'
 global._ = _
 global.devEnv = process.env.NODE_ENV == 'development'
+global.moment = moment
 
 require('./plugins/db')() // 连接数据库
 const app = new Koa()

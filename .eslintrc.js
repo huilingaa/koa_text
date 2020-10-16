@@ -17,6 +17,8 @@ module.exports = {
   },
   globals: {
     _: true,
-    devEnv: true
+    devEnv: true,
+    moment: true,
+    ObjectId: true
   }
 }

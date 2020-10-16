@@ -1,5 +1,5 @@
 const { isReceiveEmptys } = require('../../plugins/common')
-const { JobMessage } = require('../../utils/dbModelExports')
+const { WeappUser, JobMessage } = require('../../utils/dbModelExports')
 const FastScanner = require('../../plugins/fastScan')
 const words = require('../../plugins/keywords.js')
 
@@ -62,7 +62,7 @@ module.exports = async router => {
     await next()
   })
 
-    /**
+  /**
     * @swagger
     * /weapp/find_job_message:
     *   get:
@@ -94,8 +94,51 @@ module.exports = async router => {
       openid: 1,
       parent: 1,
       created_at: 1
-    })
-    ctx.body = data
+    }).lean()
+
+    const results = await Promise.all(data.map(async (item) => {
+      const message_user = await WeappUser.findOne(
+        { openid: item.openid },
+        { openid: 0, created_at: 0, updated_at: 0 }
+      )
+      item.user = message_user
+      item.created_at = moment(item.created_at).format('YYYY-MM-DD HH:mm:ss')
+      return item
+    }))
+
+    ctx.body = results
+    await next()
+  })
+
+  /**
+    * @swagger
+    * /weapp/delete_message:
+    *   post:
+    *     description: 删除小程序岗位评论
+    *     tags: [weapp]
+    *     parameters:
+    *       - name: id
+    *         type: string
+    *         required: true
+    *         description: 评论id
+    *     responses:
+    *       200:
+    *         description: 删除评论成功
+    *         schema:
+    *           example:
+    *              {message: "评论成功"}
+    */
+  router.post('/weapp/delete_message', async (ctx, next) => {
+    const { id } = ctx.request.body
+    if (isReceiveEmptys(id)) {
+      ctx.throw('400', '请传入请求参数')
+    }
+    const deleteData = await JobMessage.findOneAndDelete({ _id: id })
+    await JobMessage.deleteMany({ parent: id })
+    if (!deleteData) {
+      ctx.throw('400', '删除失败')
+    }
+    ctx.msg = '删除评论成功'
     await next()
   })
 }
