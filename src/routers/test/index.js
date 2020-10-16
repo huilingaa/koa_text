@@ -99,6 +99,26 @@ module.exports = async router => {
     }
     await next()
   })
+  // 获取 weapp  token key
+  // router.post('/weapp/aaaaa', async (ctx, next) => {
+  //   const code = ctx.request.body.js_code
+  //   if (isReceiveEmptys(code)) {
+  //     ctx.throw('400', 'code不能为空')
+  //   }
+  //   let post = {}
+  //   const newtime = moment().subtract(1, 'hour').valueOf()
+  //   if (weapp_access_token.time < newtime) {
+  //     const url = `${APP_URL}?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
+  //     post = await axios.post(url)
+  //     weapp_access_token.time = moment().valueOf()
+  //     weapp_access_token.session_key = post.data.session_key
+  //     ctx.body = post.data
+  //   } else {
+  //     ctx.body = weapp_access_token
+  //   }
+  //   console.log('----', weapp_access_token)
+  //   await next()
+  // })
 }
 
 function getFile (reader, upStream) {
