@@ -2,9 +2,9 @@ const fs = require('fs')
 const xlsx = require('xlsx')
 const bcrypt = require('bcrypt')
 
-const { Apply, User, Role } = require('../../utils/dbModelExports');;
+const { Apply, User, Role } = require('../../utils/dbModelExports')
+const { isReceiveEmptys } = require('../../plugins/common')
 module.exports = async router => {
-
     router.post('/upload_xlsx', async (ctx, next) => {
         const file = ctx.request.files.title // 获取上传文件
         const reader = fs.createReadStream(file.path) // 创建可读流
@@ -59,18 +59,18 @@ module.exports = async router => {
         await next()
     })
 
-    //mongodb测试数据生成
+    // mongodb测试数据生成
     router.get('/test/set_user', async (ctx, next) => {
         const { name, password } = ctx.query
         if (isReceiveEmptys(name, password)) {
             ctx.throw('400', '缺少参数')
         }
-        //genSalt:随机生成salt
-        //hash:获取hash值
-        const salt = await bcrypt.genSalt(10);
-        const password_hash = await bcrypt.hash(password, salt);
+        // genSalt:随机生成salt
+        // hash:获取hash值
+        const salt = await bcrypt.genSalt(10)
+        const password_hash = await bcrypt.hash(password, salt)
 
-        let data = await Role.findOne({ name: name })
+        const data = await Role.findOne({ name: name })
         if (isReceiveEmptys(data)) {
             ctx.throw('400', '暂无角色！')
         }
@@ -87,7 +87,7 @@ module.exports = async router => {
         await next()
     })
 
-    //role
+    // role
     router.get('/test/set_role', async (ctx, next) => {
         const { name, resume } = ctx.query
         if (isReceiveEmptys(name, resume)) {
@@ -104,7 +104,7 @@ module.exports = async router => {
     })
 }
 
-function getFile(reader, upStream) {
+function getFile (reader, upStream) {
     return new Promise(function (resolve, reject) {
         const stream = reader.pipe(upStream) // 可读流通过管道写入可写流
         stream.on('finish', function (err) {

@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt')
 const { jsonwebtokenSign } = require('../../plugins/jwt')
 const { isReceiveEmptys, getCtxIp } = require('../../plugins/common')
-const { Apply, User, Role } = require('../../utils/dbModelExports');;
+const { Apply, User, Role } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
     /**
@@ -35,19 +35,19 @@ module.exports = async router => {
         if (isReceiveEmptys(username, password)) {
             ctx.throw('400', '用户名或密码不能为空')
         }
-        
-        let data = await User.findOne({username:username},{created_at:0,updated_at:0,openid:0}).lean()
+
+        const data = await User.findOne({ username: username }, { created_at: 0, updated_at: 0, openid: 0 }).lean()
         const pwd = await bcrypt.compare(password, data.password)
         if (!pwd) {
             ctx.throw('400', '用户名或密码不正确,请重新登陆!')
         }
         Reflect.deleteProperty(data, 'password')
         ctx.body = {
-            user:data,
-            token:jsonwebtokenSign({
-                _id:data._id,
+            user: data,
+            token: jsonwebtokenSign({
+                _id: data._id,
                 name: data.name,
-                ip: getCtxIp(ctx.ip),
+                ip: getCtxIp(ctx.ip)
             })
         }
         await next()
