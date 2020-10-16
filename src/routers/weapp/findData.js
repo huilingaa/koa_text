@@ -151,7 +151,7 @@ module.exports = async router => {
     await Apply.updateOne({ _id: data._id }, { view_total: total })
 
     // show_message 是否展示岗位详情评论列表
-    data.show_message = true
+    data.show_message = false
     ctx.body = data
 
     await next()
