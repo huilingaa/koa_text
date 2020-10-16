@@ -38,12 +38,12 @@ module.exports = async router => {
 
     const data = await User.findOne(
       { username: username, password: Encrypt(password) },
-      { created_at: 0, updated_at: 0, openid: 0 }
+      { created_at: 0, updated_at: 0, openid: 0, password: 0 }
     ).lean()
     if (!data) {
       ctx.throw('400', '用户名或密码不正确,请重新登陆!')
     }
-    Reflect.deleteProperty(data, 'password')
+
     ctx.body = {
       user: data,
       token: jsonwebtokenSign({
