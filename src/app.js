@@ -13,6 +13,10 @@ global.secretOrPrivateKey = 'xstxhjh'
 global._ = _
 global.devEnv = process.env.NODE_ENV == 'development'
 global.moment = moment
+global.weapp_access_token = {
+  access_token: '',
+  time: moment().subtract(1, 'days').valueOf()
+}
 
 require('./plugins/db')() // 连接数据库
 const app = new Koa()

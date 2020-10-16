@@ -19,6 +19,7 @@ module.exports = {
     _: true,
     devEnv: true,
     moment: true,
-    ObjectId: true
+    ObjectId: true,
+    weapp_access_token: true
   }
 }
