@@ -40,7 +40,7 @@ module.exports = async router => {
       const url = `${APP_URL}?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
       post = await axios.post(url)
       weapp_access_token.time = moment().valueOf()
-      weapp_access_token.access_token = post.data.access_token
+      weapp_access_token.session_key = post.data.session_key
       ctx.body = post.data
     } else {
       ctx.body = weapp_access_token

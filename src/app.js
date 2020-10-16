@@ -14,7 +14,7 @@ global._ = _
 global.devEnv = process.env.NODE_ENV == 'development'
 global.moment = moment
 global.weapp_access_token = {
-  access_token: '',
+  session_key: '',
   time: moment().subtract(1, 'days').valueOf()
 }
 
