@@ -41,11 +41,11 @@ module.exports = async router => {
       post = await axios.post(url)
       weapp_access_token.time = moment().valueOf()
       weapp_access_token.access_token = post.data.access_token
-      console.log(post)
       ctx.body = post.data
     } else {
       ctx.body = weapp_access_token
     }
+    console.log('----', weapp_access_token)
     await next()
   })
 
