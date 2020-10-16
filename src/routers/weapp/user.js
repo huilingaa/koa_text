@@ -25,7 +25,7 @@ module.exports = async router => {
     if (isReceiveEmptys(openid)) {
       ctx.throw('400', 'openid不存在')
     }
-    const data = await WeappUser.findOneAndUpdate({
+    await WeappUser.findOneAndUpdate({
       openid: openid
     }, {
       openid: openid,
@@ -34,13 +34,12 @@ module.exports = async router => {
       avatar: avatar,
       city: city
     }, {
-      upsert: true,
-      new: true // 默认为false,不填写此参数,即便请求成功也不会返回数据
+      upsert: true
     })
 
-    if (!data) {
-      ctx.throw('400', '请授权用户信息')
-    }
+    // if (!data) {
+    //   ctx.throw('400', '请授权用户信息')
+    // }
 
     ctx.msg = '授权成功'
     await next()
