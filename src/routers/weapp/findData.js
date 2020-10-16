@@ -36,6 +36,7 @@ module.exports = async router => {
     }
     const url = `${APP_URL}?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
     const post = await axios.post(url)
+    console.log('---==--', post)
     ctx.body = post.data
     await next()
   })
