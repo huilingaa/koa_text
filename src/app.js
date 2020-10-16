@@ -25,7 +25,7 @@ app.use(cors())
 const staticPath = './static'
 // 静态资源
 app.use(serve(
-    path.join(__dirname, staticPath)
+  path.join(__dirname, staticPath)
 ))
 
 // 日志
@@ -36,10 +36,10 @@ app.use(koaBody({ multipart: true }))
 
 // gzip 压缩
 app.use(compress({
-    filter: function (contentType) {
-        return /text/i.test(contentType)
-    },
-    threshold: 2048
+  filter: function (contentType) {
+    return /text/i.test(contentType)
+  },
+  threshold: 2048
 }))
 
 // 校验token
@@ -49,19 +49,19 @@ require('./utils/routersApi.js')(app)
 
 // 生成api文档
 if (devEnv) {
-    const { koaSwagger } = require('koa2-swagger-ui')
-    app.use(koaSwagger({
-        routePrefix: '/swagger.html',
-        swaggerOptions: {
-            url: '/swagger.json'
-        }
-    }))
-    const swagger = require('./utils/swagger')
-    app.use(swagger.routes(), swagger.allowedMethods())
+  const { koaSwagger } = require('koa2-swagger-ui')
+  app.use(koaSwagger({
+    routePrefix: '/swagger.html',
+    swaggerOptions: {
+      url: '/swagger.json'
+    }
+  }))
+  const swagger = require('./utils/swagger')
+  app.use(swagger.routes(), swagger.allowedMethods())
 }
 
 /* 启动 */
 const port = 8812
 app.listen(port, () => {
-    console.log(`运行中: http://localhost:${port}`)
+  console.log(`运行中: http://localhost:${port}`)
 })
