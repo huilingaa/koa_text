@@ -3,7 +3,7 @@ const jobType = require('../../data/jobType')
 // const { Public } = require('../../utils/dbModelExports')
 
 module.exports = async router => {
-    /**
+  /**
        * @swagger
        * /find_job_type:
        *   get:
@@ -16,8 +16,8 @@ module.exports = async router => {
        *           example:
        *              {"data": [{"name":"职位名","key":"icon"}]}
     */
-    router.get('/find_job_type', async (ctx, next) => {
-        ctx.body = jobType
-        await next()
-    })
+  router.get('/find_job_type', async (ctx, next) => {
+    ctx.body = jobType
+    await next()
+  })
 }
