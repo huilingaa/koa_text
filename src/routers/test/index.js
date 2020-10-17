@@ -93,7 +93,7 @@ module.exports = async router => {
     const data = await Role.findOneAndUpdate({ name: name }, {
       name: name,
       resume: resume
-    }, { new: true })
+    }, { upsert: true })
     ctx.body = {
       data: data
     }
