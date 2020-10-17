@@ -3,11 +3,10 @@ module.exports = async app => {
     ctx.status = 200
     try {
       await next()
-      if (!ctx.body && !ctx.msg) {
-        ctx.throw(404, '未找到该接口')
-      }
-
       if (!ctx.url.includes('.')) {
+        if (!ctx.body && !ctx.msg) {
+          ctx.throw(404, '未找到该接口')
+        }
         const msg = ctx.msg
         const data = ctx.body
         ctx.body = {

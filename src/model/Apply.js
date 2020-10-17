@@ -16,7 +16,10 @@ const schema = new mongoose.Schema(
       default: '0'
     }, // 审核状态 0待审核 1通过 2拒绝
     data_type: String, // 数据类型 1申请 2导入JSON
-    view_total: Number, // 查看统计
+    view_total: {
+      type: Number,
+      default: 0
+    }, // 查看统计
     tags: Array, // 岗位标签
     files: Array, // 上传文件
     user_id: { // 账号id

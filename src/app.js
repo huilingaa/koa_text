@@ -13,6 +13,8 @@ global.secretOrPrivateKey = 'xstxhjh'
 global._ = _
 global.devEnv = process.env.NODE_ENV == 'development'
 global.moment = moment
+global.imgurl = 'http://xbwapp.wtc.edu.cn/employment'
+// global.imgurl = 'http://192.168.0.103:8812'
 global.weapp_access_token = {
   session_key: '',
   time: moment().subtract(1, 'days').valueOf()
@@ -27,11 +29,14 @@ require('./utils/errorCatch.js')(app)
 app.use(cors())
 
 const staticPath = './static'
+const uploads = '../uploads'
 // 静态资源
 app.use(serve(
   path.join(__dirname, staticPath)
 ))
-
+app.use(serve(
+  path.join(__dirname, uploads)
+))
 // 日志
 app.use(logger())
 

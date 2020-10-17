@@ -63,10 +63,7 @@ module.exports = async router => {
      *         description: 返回用户信息及token
      *         schema:
      *           example:
-     *              {"data": {
-     *           user:'用户信息',
-     *           token:'token'
-     * }}
+     *              {message:'发布成功'}
   */
   // 申请
   router.post('/public/set_apply', async (ctx, next) => {
@@ -99,13 +96,50 @@ module.exports = async router => {
     await next()
   })
 
+  /**
+     * @swagger
+     * /pull_apply:
+     *   post:
+     *     description: pull_apply 招聘发布-申请
+     *     tags: [User]
+     *     parameters:
+     *       - name: start_time
+     *         type: string
+     *         required: true
+     *         description: 开始时间
+     *       - name: end_time
+     *         type: string
+     *         required: true
+     *         description: 结束时间
+     *     responses:
+     *       200:
+     *         description: 返回用户信息及token
+     *         schema:
+     *           example:
+     *              {"data":[{
+     *                "_id":"5f8b2212e460081b6a383028",
+     *                "status":"0",
+     *                "view_total":0,
+     *                "tags":["技术大牛","扁平化管理","成长空间大"],
+     *                "files":"http://101.132.166.73:8812/uploads/jobApply/1602953746433武汉创腾科技有限责任公司.png",
+     *                "company_address":"武汉光谷软件园10A-405","company_name":"武汉创腾科技有限责任公司",
+     *                "company_size":"20-99人","content":"<ul><li><span style=\"color: rgb(230, 0, 0); background-color: rgb(178, 178, 0);\">宿舍的发送到发送到发送到发送到</span></li></ul>",
+     *                "data_type":"1",
+     *                "email":"739803697@qq.com",
+     *                "job_name":"前端开发",
+     *                "job_type_id":"技术类",
+     *                "people":"彭于晏",
+     *                "phone":"18126473030",
+     *                "created_at":"2020-10-17T16:55:46.436Z",
+     *                "updated_at":"2020-10-17T16:55:46.436Z"}]}
+  */
+
   // 拉取招聘信息
   router.post('/pull_apply', async (ctx, next) => {
     const { start_time, end_time } = ctx.request.body
     if (isReceiveEmptys(start_time, end_time)) {
       ctx.throw('400', '缺少上传参数！')
     }
-    console.log(start_time, end_time)
     var find_start_time = moment(moment(new Date(start_time)).format('YYYY-MM-DD 00:00:00'))._d
     var find_end_time = moment(moment(new Date(end_time)).format('YYYY-MM-DD 23:59:59'))._d
     console.log(find_start_time, find_end_time)
@@ -122,12 +156,41 @@ module.exports = async router => {
         }
       ]
     }).lean()
-    // data.map(item => {
-    //   item.job_type_id = jobType.filter()
-    // })
+    data.map(item => {
+      item.files = `${imgurl}${item.files}`
+      const jobTypeObj = jobType.find(t => {
+        return t.key == item.job_type_id
+      })
+      item.job_type_id = jobTypeObj.name
+      return item
+    })
     ctx.body = data
     await next()
   })
+
+  /**
+   * @swagger
+   * /public/set_apply:
+   *   post:
+   *     description: modify_table 拉取招聘信息
+   *     tags: [User]
+   *     parameters:
+   *       - name: ids
+   *         type: Array
+   *         required: true
+   *         description: 操作数据的id
+   *       - name: status
+   *         type: string
+   *         required: true
+   *         description: 操作状态 1通过 2拒绝
+   *     responses:
+   *       200:
+   *         description: 返回用户信息及token
+   *         schema:
+   *           example:
+   *            {message: '操作成功!'}
+   *
+*/
 
   // 拉取招聘信息
   router.post('/modify_table', async (ctx, next) => {
@@ -139,9 +202,7 @@ module.exports = async router => {
     await Promise.all(data.map(async (item) => {
       await Apply.findOneAndUpdate({ _id: ObjectId(item._id) }, { status: status })
     }))
-    ctx.body = {
-      message: '操作成功!'
-    }
+    ctx.msg = '操作成功!'
     await next()
   })
 }

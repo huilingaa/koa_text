@@ -67,13 +67,13 @@ module.exports = async router => {
       ctx.throw('400', '缺少参数')
     }
 
-    const data = await Role.findOne({ name: name })
+    const data = await Role.findOne({ name: '老师' })
     if (isReceiveEmptys(data)) {
       ctx.throw('400', '暂无角色！')
     }
     await User({
       username: 'admin', // 账号
-      password: Encrypt(password), // 密码
+      password: Encrypt('admin123456'), // 密码
       phone: '18126473030',
       name: '彭于晏',
       role_id: ObjectId(data._id)

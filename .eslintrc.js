@@ -20,6 +20,7 @@ module.exports = {
     devEnv: true,
     moment: true,
     ObjectId: true,
-    weapp_access_token: true
+    weapp_access_token: true,
+    imgurl: true
   }
 }

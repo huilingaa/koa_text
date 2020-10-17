@@ -31,7 +31,7 @@ function setUpload (file, url, fileName) {
   // 创建可读流 -> 获取扩展名 -> 创建可写流 -> 写入可写流
   const reader = fs.createReadStream(file.path)
   const ext = file.name.split('.').pop()
-  const filePath = `./uploads/${url}/${new Date().getTime()}${fileName || 'null'}.${ext}`
+  const filePath = `./${url}/${new Date().getTime()}${fileName || 'null'}.${ext}`
   const upStream = fs.createWriteStream(filePath)
   reader.pipe(upStream)
   return filePath.substr(1)
