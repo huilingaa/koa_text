@@ -3,8 +3,8 @@ module.exports = async app => {
     ctx.status = 200
     try {
       await next()
-
-      if (!ctx.type) {
+      console.log(ctx.type)
+      if (ctx.type == 'application/json') {
         const msg = ctx.msg
         const data = ctx.body
         ctx.body = {
