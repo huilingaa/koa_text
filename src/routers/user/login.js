@@ -26,10 +26,11 @@ module.exports = async router => {
        *         description: 返回用户信息及token
        *         schema:
        *           example:
-       *              {"data": {
-       *           user:'用户信息',
-       *           token:'token'
-       * }}
+       *              {data: {
+       *                user: '用户信息',
+       *                token: 'token'
+       *              }
+       *              }
     */
 
   router.post('/login', async (ctx, next) => {
