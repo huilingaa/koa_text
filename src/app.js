@@ -28,12 +28,12 @@ require('./utils/errorCatch.js')(app)
 
 app.use(cors())
 
-const staticPath = './static'
+// const staticPath = '../static'
 const uploads = '../uploads'
 // 静态资源
-app.use(serve(
-  path.join(__dirname, staticPath)
-))
+// app.use(serve(
+//   path.join(__dirname, staticPath)
+// ))
 app.use(serve(
   path.join(__dirname, uploads)
 ))
