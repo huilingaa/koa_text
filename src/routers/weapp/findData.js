@@ -147,7 +147,7 @@ module.exports = async router => {
     }
 
     const data = await Apply.findById(id).lean()
-
+    data.date = moment(data.created_at).format('YYYY-MM-DD HH:mm:ss')
     const total = data.view_total + 1
     await Apply.updateOne({ _id: data._id }, { view_total: total })
 
