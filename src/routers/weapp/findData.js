@@ -83,7 +83,7 @@ module.exports = async router => {
      * @swagger
      * /weapp/find_job:
      *   get:
-     *     description: 小程序获取所有职位
+     *     description: 小程序获取首页岗位列表
      *     tags: [weapp]
      *     parameters:
      *       - name: type
@@ -172,6 +172,9 @@ module.exports = async router => {
      *         type: string
      *         required: true
      *         description: 分页数据
+     *       - name: type
+     *         type: string
+     *         description: 1获取最新数据 2获取热门数据
      *     responses:
      *       200:
      *         description: 岗位列表数据
@@ -180,10 +183,15 @@ module.exports = async router => {
      *              {data: [] }
   */
   router.get('/weapp/find_job_list', async (ctx, next) => {
-    const { keyword, page } = ctx.query
+    const { keyword, page, type } = ctx.query
     if (isReceiveEmptys(page)) {
       ctx.throw('400', '请输入数据页码')
     }
+    let sort = { created_at: -1 }
+    if (type == 2) {
+      sort = { view_total: -1 }
+    }
+
     const limit = 10
     let data = []
     const returnOpt = {
@@ -207,7 +215,7 @@ module.exports = async router => {
         fields.$or = [{ job_type_id: keyword }, { job_type_id: '' }]
       }
       data = await Apply.find(fields, returnOpt)
-        .sort({ created_at: -1 }).limit(limit).skip((page - 1) * 10)
+        .sort(sort).limit(limit).skip((page - 1) * 10)
     } else {
       const reg = new RegExp(keyword, 'i')
       data = await Apply.find({
@@ -220,7 +228,7 @@ module.exports = async router => {
           { content: { $regex: reg } },
           { tags: { $regex: reg } }
         ]
-      }, returnOpt).sort({ created_at: -1 }).limit(limit).skip((page - 1) * 10)
+      }, returnOpt).sort(sort).limit(limit).skip((page - 1) * 10)
     }
 
     ctx.body = data
