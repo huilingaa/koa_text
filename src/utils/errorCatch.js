@@ -14,7 +14,8 @@ module.exports = async app => {
       }
     } catch (err) {
       console.error(err)
-      const status = err.status || 500
+      // const status = err.status || 500
+      const status = 200
       ctx.status = status
       ctx.body = {
         message: err.message,
